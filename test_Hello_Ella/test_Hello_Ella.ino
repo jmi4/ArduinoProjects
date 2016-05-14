@@ -8,18 +8,7 @@
 
 
   The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * LCD VSS pin to ground
- * LCD VCC pin to 5V
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
+ See fritzing drawing
 
  */
 // include the library code:
@@ -45,34 +34,58 @@ void setup() {
   // Print greeting message to the LCD.
   lcd.setCursor(2, 0);
   lcd.print("Hello Ella!");
-  delay(3000);
-  lcd.setCursor(0, 1);
+  delay(1000);
+  lcd.setCursor(2, 1);
   lcd.print("Want Treats?");
-  delay(3000);
+  delay(1000);
   lcd.setCursor(0, 0);
-  lcd.print("Press button");
+  PRESSBUTTON:lcd.print("Press button");
   lcd.setCursor(0, 1);
-  // Clear the top LCD row
+  // Clear the bottom LCD row
   lcd.print("                ");
 }
 
 void loop() {
+  PRESSBUTTON:lcd.clear();
+  lcd.print("Press Button");
+  delay(50);
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
   lcd.setCursor(0, 1);
   // read the pushbutton input pin:
-  buttonState = digitalRead(buttonPin);
-
+  buttonState = digitalRead(buttonPin); 
   // compare the buttonState to its previous state
   if (buttonState != lastButtonState) {
     // if the state has changed, increment the counter
     if (buttonState == HIGH) {
+      lcd.clear();
+      lcd.setCursor(5, 0);
+      lcd.print("Treat");
+      lcd.setCursor(2, 1);
+      lcd.print("Dispensing...");
+      delay(1000);
+      lcd.clear();
       // if the current state is HIGH then the button
       // went from off to on:
       buttonPushCounter++;
       Serial.println("on");
-      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("Count:");
+      lcd.setCursor(6, 1);
       lcd.print(buttonPushCounter);
+      int countDown = 6;
+      lcd.setCursor(0, 0);
+      lcd.print("Countdown:");
+      lcd.setCursor(10, 0);
+      lcd.print(countDown);
+      do
+      {
+        countDown--;
+        lcd.setCursor(10, 0);
+        lcd.print(countDown);
+        delay(1000);
+      } while (countDown > 0);
+     goto PRESSBUTTON;
     } else {
       // if the current state is LOW then the button
       // wend from on to off:
