@@ -48,7 +48,7 @@ void setup() {
 void loop() {
   PRESSBUTTON:lcd.clear();
   lcd.print("Press Button");
-  delay(50);
+  delay(70);
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
   lcd.setCursor(0, 1);
